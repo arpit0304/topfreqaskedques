@@ -1,0 +1,21 @@
+https://leetcode.com/problems/combination-sum-iii/description/
+
+class Solution {
+public:
+    vector<vector<int>>ans;
+    vector<vector<int>> combinationSum3(int j, int target) {
+        vector<int>v;
+        backtrack(v,j, 0, 1, target, 0);
+        return ans;
+    }
+    void backtrack(vector<int>&v,int j,int pos, int value, int target, int sum){
+        if(sum>target) return;
+        if(sum==target&&pos==j) ans.push_back(v);
+        if(pos==j) return;
+        for(int i=value;i<11-j+pos;i++){
+            v.push_back(i);
+            backtrack(v,j,pos+1, i+1,target, sum+i);
+            v.pop_back();
+        }
+    }
+};
