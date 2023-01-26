@@ -1,0 +1,21 @@
+https://leetcode.com/problems/bulls-and-cows/
+
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int cows[26]={0};
+        int bulls=0,c=0;
+        for(int i=0;i<guess.length();i++){
+            if(secret[i]==guess[i]) bulls++;
+            else cows[secret[i]-'0']++;
+        }
+        for(int i=0;i<guess.length();i++){
+            if(cows[guess[i]-'0']>0&&secret[i]!=guess[i]){
+                c++;
+                cows[guess[i]-'0']--;
+            }
+        }
+        string ans=to_string(bulls)+"A"+to_string(c)+"B";
+        return ans;
+    }
+};
