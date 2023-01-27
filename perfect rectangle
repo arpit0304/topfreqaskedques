@@ -1,0 +1,26 @@
+https://leetcode.com/problems/perfect-rectangle/description/
+
+class Solution {
+public:
+    bool isRectangleCover(vector<vector<int>>& r) {
+        int n=r.size();
+        int minx=INT_MAX,miny=INT_MAX,maxx=INT_MIN,maxy=INT_MIN;
+        unsigned long long int sum=0;
+        set<pair<int,int>>s;
+        for(int i=0;i<n;i++){
+            minx=min(minx,r[i][0]);//a
+            miny=min(miny,r[i][1]);//b
+            maxx=max(maxx,r[i][2]);//x
+            maxy=max(maxy,r[i][3]);//y
+            if(!s.insert({r[i][0],r[i][1]}).second) s.erase({r[i][0],r[i][1]});
+            if(!s.insert({r[i][2],r[i][1]}).second) s.erase({r[i][2],r[i][1]});
+            if(!s.insert({r[i][0],r[i][3]}).second) s.erase({r[i][0],r[i][3]});
+            if(!s.insert({r[i][2],r[i][3]}).second) s.erase({r[i][2],r[i][3]});
+            sum+=(unsigned long long int)((unsigned long long int)(r[i][2]-r[i][0])*(unsigned long long int)(r[i][3]-r[i][1]));
+        }
+        // cout<<s.size();
+        if((s.find({minx,miny})==s.end())||(s.find({maxx,miny})==s.end())||(s.find({minx,maxy})==s.end())||(s.find({maxx,maxy})==s.end())||s.size()!=4) return false;
+        unsigned long long int area=(unsigned long long int)(maxx-minx)*(unsigned long long int)(maxy-miny);
+        return sum==area;
+    }
+};
