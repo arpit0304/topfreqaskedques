@@ -1,0 +1,46 @@
+https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/description/
+
+#define ll long long
+#define pll pair<ll,ll>
+class Solution {
+public:
+    
+    int mod=1e9+7;
+    int dijkstra(vector<vector<pll>>&adj, int n){
+        vector<ll>ways(n), dis(n,LONG_MAX);
+        vector<int>vis(n,0);
+        priority_queue<pll,vector<pll>, greater<pll>>pq;
+        pq.push({0,0});
+        dis[0]=0;
+        ways[0]=1;
+        while(!pq.empty()){
+            auto [d,u]=pq.top();
+            pq.pop();
+            if(vis[u]) continue;
+            vis[u]=1;
+            
+            // if(d>dis[u]) continue;
+            
+            for(auto [v, time]:adj[u]){
+                if(time+d<dis[v]){
+                    dis[v]=time+d;
+                    pq.push({dis[v],v});
+                    ways[v]=ways[u];
+                }
+                else if(time+d==dis[v]){
+                    ways[v]=(ways[u]+ways[v])%mod;
+                }
+            }
+        }
+        return ways[n-1];
+    }
+    int countPaths(int n, vector<vector<int>>& roads) {
+        vector<vector<pll>>adj(n);
+        for(int i=0;i<roads.size();i++){
+            adj[roads[i][0]].push_back({roads[i][1],roads[i][2]});
+            adj[roads[i][1]].push_back({roads[i][0],roads[i][2]});
+        }
+        
+        return dijkstra(adj, n);
+    }
+};
