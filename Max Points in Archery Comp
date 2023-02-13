@@ -1,0 +1,28 @@
+https://leetcode.com/problems/maximum-points-in-an-archery-competition/description/
+
+class Solution {
+public:
+    int best=0;
+    void fun(vector<int>& alice, int arrows, int curr, vector<int>& scores, int i,vector<int>&bestScore){
+        if(arrows==0||i==12){
+            if(best<curr){
+                bestScore=scores;
+                bestScore[0]+=arrows;
+                best=curr;
+            }
+            return;
+        }
+        if(arrows-alice[i]>0){
+            scores[i]=alice[i]+1;
+            fun(alice,arrows-alice[i]-1, curr+i, scores, i+1, bestScore);
+            scores[i]=0;
+        }
+        fun(alice,arrows,curr,scores, i+1,bestScore);
+    }
+    vector<int> maximumBobPoints(int numArrows, vector<int>& aliceArrows) {
+        vector<int>scores(12,0);
+        vector<int>bestScore(12,0);
+        fun(aliceArrows, numArrows, 0, scores, 0, bestScore);
+        return bestScore;
+    }
+};
